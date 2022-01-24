@@ -10,7 +10,7 @@ from discord.utils import get
 from discord import FFmpegPCMAudio, utils
 from youtube_dl import YoutubeDL
 
-bot = commands.Bot(command_prefix="!", help_command=None)
+bot = commands.Bot(command_prefix=".", help_command=None)
 TOKEN = open("TOKEN.txt").read()
 
 queue = []
@@ -109,7 +109,6 @@ async def on_message(message):
 
 
 @bot.command(pass_context=True, aliases=["aw"])
-@commands.has_permissions(manage_messages=True)
 async def addword(ctx, arg):
     banWords.append(str(arg))
     print(banWords)
@@ -164,9 +163,10 @@ async def ecuacion(ctx, arg, arg1, arg2):
 
 
 @bot.command(pass_context=True)
-async def ball(ctx, arg):
+async def ball(ctx, *, quest):
+    print(quest)
     try:
-        if str.__contains__(arg, '?'):
+        if str.__contains__(quest, '?'):
             await ctx.send(random.choice(answers))
         else:
             await ctx.send("¿Eso es una pregunta?")
@@ -175,11 +175,9 @@ async def ball(ctx, arg):
 
 
 @bot.command(case_insensitive=True, aliases=["rm"])
-@commands.has_permissions(administrator=True)
 async def reminder(ctx, time, *, reminder):
     print(time)
     print(reminder)
-    user = ctx.message.author
     embed = discord.Embed(color=0x55a7f7, timestamp=datetime.utcnow())
     seconds = 0
     if reminder is None:
@@ -233,7 +231,7 @@ async def help(ctx):
     embed.add_field(name="!calc, !c", value="Realiza calculos basicos (Formato: num1 operador num2).", inline=False)
     embed.add_field(name="!ecuacion, !equa", value="resuelve ecuaciones de segundo grado (Formato: a b c).",
                     inline=False)
-    embed.add_field(name="!ecuacion, !equa", value="Comando solo para moderadores. Crea recordatorios (Formato: "
+    embed.add_field(name="!reminder, !rm", value="Comando solo para moderadores. Crea recordatorios (Formato: "
                                                    "tiempo (1s/5m/2h/1d), recordatorio).", inline=False)
     await author.send(embed=embed)
 
